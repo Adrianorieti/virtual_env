@@ -1,0 +1,14 @@
+# To create a password use this
+# $ ansible all -i localhost, -m debug -a "msg={{ 'mypassword' | password_hash('sha512', 'mysecretsalt') }}"
+---
+users:
+  - name: "client"
+    create_home: yes
+    home: '/home/client'
+    password: '$6$rounds=656000$mysecretsalt$85RdHJT1fJk34Phb2WwJu.ce5wKuJRXsQKbvXpAMgbO7lBhlxK41ODtT.oD7bWpe0odezW68dVAQ6YjPt.Vef0'
+    shell: '/bin/bash'
+  - name: "client2"
+    create_home: yes
+    home: '/home/client2'
+    password: '$6$rounds=656000$mysecretsalt$.omuXAwS1KeusLhT3oO8WJjYp1UAq4sICqgSvMtCP/ju44RlsmxGk1ZOgqlV6D9DIfdEiL3te4Lk.D55CWdK70'
+    shell: '/bin/bash'

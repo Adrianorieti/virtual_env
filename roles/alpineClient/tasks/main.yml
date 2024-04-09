@@ -1,0 +1,20 @@
+---
+- name: Install and configure alpine client
+  become: yes
+  become_user: root
+  apt:
+    name: alpine
+
+- name: Copy Alpine configuration file
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/alpine_pinerc.j2"
+    dest: "/home/{{ item.name }}/.pinerc"
+    owner: "{{ item.name }}"  
+    group: "{{ item.name }}"
+    mode: "0644"  
+  loop: "{{ client_vars }}"
+  vars:
+    alpine_personal_name: "{{ item.alpine_user_name }}"
+    alpine_smtp_server: "{{ item.smtp_server }}"
+    alpine_user_domain: "{{ item.user_domain }}"
+    alpine_imap_server: "{{ item.imap_server }}"

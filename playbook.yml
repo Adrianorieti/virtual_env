@@ -1,0 +1,37 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Install utils
+      apt:
+        name:
+          - vim
+          - tcpdump
+        state: latest
+        update_cache: yes
+        cache_valid_time: 3600
+
+
+- hosts: dnsserver
+  become: true
+  roles:
+    - dnsserver
+
+
+- hosts: mailserver
+  become: true
+  roles:
+    - mailserver
+    - common
+    
+- hosts: client
+  become: true
+  roles:
+    - common
+    - alpineClient
+
+- hosts: client2
+  become: true
+  roles:
+    - common
+    - alpineClient

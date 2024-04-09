@@ -1,0 +1,26 @@
+- name: Set nameserver in resolv.conf
+  ansible.builtin.replace:
+    path: /etc/resolv.conf
+    regexp: '^nameserver\s+.+'
+    replace: 'nameserver 192.168.56.12'
+
+- name: Creazione degli utenti
+  user:
+    name: "{{ item.name }}"
+    home: "{{ item.home }}"  
+    shell: "{{ item.shell }}"
+    password: "{{ item.password }}"
+   #expires: "{{ lookup('pipe', 'date -u --date=\"now + 180 days\" +%s') }}"
+  loop: "{{ users }}"
+
+
+- name: Aggiunta degli utenti al gruppo sudo
+  user: 
+    name: "{{ item }}"
+    groups: sudo
+  with_items:
+    - test
+    - client
+    - client2
+
+

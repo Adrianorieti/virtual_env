@@ -1,0 +1,22 @@
+- name: Install postfix and Dovecot
+  apt:
+    name: "{{ item.name }}"
+    state: present
+  loop: "{{ to_install }}"
+
+  
+- name: Copy postfix configs
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/postfix/main.cf"
+    dest: "/etc/postfix/main.cf"
+  notify: restart postfix
+
+
+- name: Configure Dovecot
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items: "{{ dovecot_configs }}"
+  notify: restart dovecot
+
+

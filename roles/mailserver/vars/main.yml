@@ -1,0 +1,9 @@
+to_install:
+  - name: postfix
+  - name: dovecot-core
+  - name: dovecot-imapd
+  
+dovecot_configs:
+  - { src: "{{ role_path }}/files/dovecot/dovecot.conf", dest: "/etc/dovecot/dovecot.conf" }
+  - { src: "{{ role_path }}/files/dovecot/10-mail.conf", dest: "/etc/dovecot/conf.d/10-mail.conf" }
+

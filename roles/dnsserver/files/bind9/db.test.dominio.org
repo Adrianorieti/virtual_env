@@ -1,0 +1,22 @@
+; 
+; BIND data file for test.dominio.org
+;
+$TTL    86400
+@       IN      SOA     test.dominio.org. root.test.dominio.org. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                          86400 )       ; Negative Cache TTL
+;
+@       IN      NS      localhost.
+@       IN      A       192.168.56.10
+@       IN      MX      10 mail.test.dominio.org.
+
+; Alias per il server di posta
+
+mail    IN      A       192.168.56.10
+imap.mail IN  A       192.168.56.10
+client      IN      A       192.168.56.11
+client2     IN      A       192.168.56.13
+dnsserver   IN      A       192.168.56.12
