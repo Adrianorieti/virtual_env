@@ -22,6 +22,7 @@
   become: true
   roles:
     - mailserver
+    - firewall
     - common
     
 - hosts: client

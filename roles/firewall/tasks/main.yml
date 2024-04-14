@@ -1,0 +1,27 @@
+- name: Verifica se il servizio nftables è installato
+  stat:
+    path: /usr/sbin/nft
+  register: nft_installed
+- name: Installa il servizio nftables se non è installato
+  become: true
+  package:
+    name: nftables
+    state: present
+  when: not nft_installed.stat.exists
+- name: Copia il file di configurazione di nftables sul server
+  become: true
+  copy:
+    src: "{{ role_path }}/files/{{ inventory_hostname }}/nftables.nft"
+    dest: /etc/nftables.nft
+    owner: root
+    group: root
+    mode: "0644"
+- name: Abilita e avvia il servizio nftables
+  become: true
+  service:
+    name: nftables
+    state: started
+    enabled: true
+- name: Ricarica la configurazione di nftables
+  become: true
+  command: sudo nft -f /etc/nftables.nft

@@ -1,0 +1,40 @@
+#!/user/sbin/nft -f
+
+table inet filter {
+        chain input {
+                type filter hook input priority filter; policy drop;
+
+                # Consenti il traffico SSH 
+                tcp dport 22 accept
+
+                # Consenti il traffico SMTP
+                tcp dport 25 accept
+
+                # Consenti il traffico IMAP 
+                tcp dport 143 accept
+
+                # Consenti il traffico IMAPS 
+                tcp dport 993 
+                
+                # Consenti il traffico DNS
+                udp dport 53 accept
+                udp sport 53 accept
+
+                # Consenti il traffico DNS
+                tcp dport 53 accept
+                tcp sport 53 accept
+                
+                # Blocca tutto il resto del traffico TCP
+                tcp dport != {22, 25, 143, 993, 23} drop
+        }
+
+        chain forward {
+                type filter hook forward priority filter; policy accept;
+        }
+
+        chain output {
+                type filter hook output priority filter; policy accept;
+        }
+}
+
+
