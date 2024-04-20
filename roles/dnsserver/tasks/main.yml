@@ -33,6 +33,6 @@
 - name: Add nameserver to resolv.conf
   ansible.builtin.lineinfile:
     path: /etc/resolv.conf
-    line: 'nameserver 192.168.56.12'
+    line: 'nameserver 10.10.10.11'
     create: yes
 

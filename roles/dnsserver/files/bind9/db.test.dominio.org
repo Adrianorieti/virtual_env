@@ -10,13 +10,13 @@ $TTL    86400
                           86400 )       ; Negative Cache TTL
 ;
 @       IN      NS      localhost.
-@       IN      A       192.168.56.10
+@       IN      A       10.10.10.14
 @       IN      MX      10 mail.test.dominio.org.
 
 ; Alias per il server di posta
 
-mail    IN      A       192.168.56.10
-imap.mail IN  A       192.168.56.10
-client      IN      A       192.168.56.11
-client2     IN      A       192.168.56.13
-dnsserver   IN      A       192.168.56.12
+mail    IN      A       10.10.10.14
+imap.mail IN  A       10.10.10.14
+client      IN      A       10.10.10.12
+client2     IN      A       10.10.10.13
+dnsserver   IN      A       10.10.10.11

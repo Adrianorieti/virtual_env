@@ -1,7 +1,7 @@
 acl trustedclients {
         localhost;
         localnets;
-        192.168.56.0/24;
+        10.10.10.0/24;
 };
 
 options {
