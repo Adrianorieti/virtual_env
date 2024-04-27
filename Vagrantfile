@@ -19,45 +19,45 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "dnsserver" do |dnsserver|
     dnsserver.vm.hostname = "dnsserver"
-    dnsserver.vm.network "private_network", ip: "10.10.10.11", virtualbox__intnet: "h1switch"
+    dnsserver.vm.network "private_network", ip: "10.10.10.2", virtualbox__intnet: "h1switch", :netmask => "255.255.255.0"
+    dnsserver.vm.provision "shell", inline: <<-SHELL
+    sudo ip r add 10.10.20.0/24 via 10.10.10.254
+  SHELL
   end
 
   config.vm.define "client" do |client|
     client.vm.hostname = "client"
-    client.vm.network "private_network", ip: "10.10.10.12", virtualbox__intnet: "h2switch"
+    client.vm.network "private_network", ip: "10.10.20.2", virtualbox__intnet: "h2switch", :netmask => "255.255.255.0"
+    client.vm.provision "shell", inline: <<-SHELL
+    sudo ip r add 10.10.10.0/24 via 10.10.20.254
+  SHELL
   end
   
   config.vm.define "client2" do |client2|
     client2.vm.hostname = "client2"
-    client2.vm.network "private_network", ip: "10.10.10.13", virtualbox__intnet: "h3switch"
+    client2.vm.network "private_network", ip: "10.10.20.3", virtualbox__intnet: "h3switch", :netmask => "255.255.255.0"
+    client2.vm.provision "shell", inline: <<-SHELL
+    sudo ip r add 10.10.10.0/24 via 10.10.20.254
+  SHELL
   end
 
   config.vm.define "mailserver" do |mailserver|
     mailserver.vm.hostname = "mailserver"
-    mailserver.vm.network "private_network", ip: "10.10.10.14", virtualbox__intnet: "h4switch"
+    mailserver.vm.network "private_network", ip: "10.10.10.3", virtualbox__intnet: "h4switch", :netmask => "255.255.255.0"
+    mailserver.vm.provision "shell", inline: <<-SHELL
+    sudo ip r add 10.10.20.0/24 via 10.10.10.254
+  SHELL
   end
 
-  config.vm.define "switch" do |switch|
-    switch.vm.box = "ubuntu/jammy64"
-    switch.vm.hostname = "switch"
-    switch.vm.network "private_network", ip: "10.10.10.1", virtualbox__intnet: "h1switch", nic_type: "virtio"
-    switch.vm.network "private_network", ip: "10.10.10.2", virtualbox__intnet: "h2switch", nic_type: "virtio"
-    switch.vm.network "private_network", ip: "10.10.10.3", virtualbox__intnet: "h3switch", nic_type: "virtio"
-    switch.vm.network "private_network", ip: "10.10.10.4", virtualbox__intnet: "h4switch", nic_type: "virtio"
-    switch.vm.provision "shell", inline: <<-SHELL
-        apt update
-        apt install -y openvswitch-switch
-        ovs-vsctl add-br br0
-        ovs-vsctl add-port br0 enp0s8
-        ovs-vsctl add-port br0 enp0s9
-        ovs-vsctl add-port br0 enp0s10
-        ovs-vsctl add-port br0 enp0s16
-        ovs-vsctl set port enp0s9 tag=1000
-        ovs-vsctl set port enp0s10 tag=1000
-        ovs-vsctl set port enp0s8 tag=2000
-        ovs-vsctl set port enp0s16 tag=2000
-    SHELL
-    switch.vm.provider "virtualbox" do |virtualbox|
+  config.vm.define "switchRouter" do |switchRouter|
+    switchRouter.vm.box = "ubuntu/jammy64"
+    switchRouter.vm.hostname = "switchRouter"
+    # Unused ip
+    switchRouter.vm.network "private_network", ip: "10.10.30.10", virtualbox__intnet: "h1switch", nic_type: "virtio", :netmask => "255.255.255.0"
+    switchRouter.vm.network "private_network", ip: "10.10.30.20", virtualbox__intnet: "h2switch", nic_type: "virtio", :netmask => "255.255.255.0"
+    switchRouter.vm.network "private_network", ip: "10.10.30.30", virtualbox__intnet: "h3switch", nic_type: "virtio", :netmask => "255.255.255.0"
+    switchRouter.vm.network "private_network", ip: "10.10.30.40", virtualbox__intnet: "h4switch", nic_type: "virtio", :netmask => "255.255.255.0"
+    switchRouter.vm.provider "virtualbox" do |virtualbox|
       virtualbox.customize [ "modifyvm", :id, "--nicpromisc2", "allow-vms" ]
       virtualbox.customize [ "modifyvm", :id, "--nicpromisc3", "allow-vms" ]
       virtualbox.customize [ "modifyvm", :id, "--nicpromisc4", "allow-vms" ]

@@ -7,7 +7,7 @@
         name:
           - vim
           - tcpdump
-          - arp-scan
+          - net-tools
         state: latest
         update_cache: yes
         cache_valid_time: 3600
@@ -38,7 +38,7 @@
     - common
     - alpineClient
     
-#- hosts: switchRouter
-#  become: true
-#  roles:
-#    - VswitchRouter
+- hosts: switchRouter
+  become: true
+  roles:
+    - switchRouter

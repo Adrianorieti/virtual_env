@@ -1,0 +1,18 @@
+ovs_bridge: "br0"
+ovs_ports:
+  - name: enp0s8
+    tag: 10
+  - name: enp0s9
+    tag: 20
+  - name: enp0s10
+    tag: 20
+  - name: enp0s16
+    tag: 10
+
+vlan_interfaces:
+  - name: "vlan10"
+    tag: "10"
+    ip_address: "10.10.10.254"
+  - name: "vlan20"
+    tag: "20"
+    ip_address: "10.10.20.254"
