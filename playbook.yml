@@ -30,13 +30,13 @@
   become: true
   roles:
     - common
-    - alpineClient
+    # - alpineClient
 
 - hosts: client2
   become: true
   roles:
     - common
-    - alpineClient
+    # - alpineClient
     
 - hosts: switchRouter
   become: true

@@ -19,12 +19,9 @@
 
 
 - name: Add internal ports for VLANs
-  openvswitch.openvswitch.openvswitch_port:
-    bridge: "{{ ovs_bridge }}"
-    port: "{{ item.name }}"
-    state: present
-    tag: "{{ item.tag }}"
+  ansible.builtin.shell: "ovs-vsctl add-port {{ ovs_bridge }} {{ item.name }} tag={{ item.tag }} -- set interface {{ item.name }} type=internal"
   loop: "{{ vlan_interfaces }}"
+  
 
 - name: Set IPs for router interfaces
   ansible.builtin.shell: "ip addr add {{ item.ip_address }}/24 dev {{ item.name }}"

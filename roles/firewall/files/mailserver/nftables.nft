@@ -14,13 +14,11 @@ table inet filter {
                 tcp dport 143 accept
 
                 # Consenti il traffico IMAPS 
-                tcp dport 993 
+                tcp dport 993 accept
                 
                 # Consenti il traffico DNS
                 udp dport 53 accept
                 udp sport 53 accept
-
-                # Consenti il traffico DNS
                 tcp dport 53 accept
                 tcp sport 53 accept
                 

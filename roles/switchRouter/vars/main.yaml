@@ -11,8 +11,8 @@ ovs_ports:
 
 vlan_interfaces:
   - name: "vlan10"
-    tag: "10"
+    tag: 10
     ip_address: "10.10.10.254"
   - name: "vlan20"
-    tag: "20"
+    tag: 20
     ip_address: "10.10.20.254"

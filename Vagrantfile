@@ -11,10 +11,26 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provision :shell, inline: "sudo apt update && sudo apt upgrade -y"
-  
-  
+
   config.vm.provision :ansible do |ansible|
     ansible.playbook = "playbook.yml"
+    ansible.verbose = "-vvv"
+  end
+
+  config.vm.define "switchRouter" do |switchRouter|
+    switchRouter.vm.box = "ubuntu/jammy64"
+    switchRouter.vm.hostname = "switchRouter"
+    # Unused ip
+    switchRouter.vm.network "private_network", ip: "10.10.30.10", virtualbox__intnet: "h1switch", nic_type: "virtio", :netmask => "255.255.255.0"
+    switchRouter.vm.network "private_network", ip: "10.10.30.20", virtualbox__intnet: "h2switch", nic_type: "virtio", :netmask => "255.255.255.0"
+    switchRouter.vm.network "private_network", ip: "10.10.30.30", virtualbox__intnet: "h3switch", nic_type: "virtio", :netmask => "255.255.255.0"
+    switchRouter.vm.network "private_network", ip: "10.10.30.40", virtualbox__intnet: "h4switch", nic_type: "virtio", :netmask => "255.255.255.0"
+    switchRouter.vm.provider "virtualbox" do |virtualbox|
+      virtualbox.customize [ "modifyvm", :id, "--nicpromisc2", "allow-vms" ]
+      virtualbox.customize [ "modifyvm", :id, "--nicpromisc3", "allow-vms" ]
+      virtualbox.customize [ "modifyvm", :id, "--nicpromisc4", "allow-vms" ]
+      virtualbox.customize [ "modifyvm", :id, "--nicpromisc5", "allow-vms" ]
+    end
   end
 
   config.vm.define "dnsserver" do |dnsserver|
@@ -48,20 +64,6 @@ Vagrant.configure("2") do |config|
     sudo ip r add 10.10.20.0/24 via 10.10.10.254
   SHELL
   end
+    
 
-  config.vm.define "switchRouter" do |switchRouter|
-    switchRouter.vm.box = "ubuntu/jammy64"
-    switchRouter.vm.hostname = "switchRouter"
-    # Unused ip
-    switchRouter.vm.network "private_network", ip: "10.10.30.10", virtualbox__intnet: "h1switch", nic_type: "virtio", :netmask => "255.255.255.0"
-    switchRouter.vm.network "private_network", ip: "10.10.30.20", virtualbox__intnet: "h2switch", nic_type: "virtio", :netmask => "255.255.255.0"
-    switchRouter.vm.network "private_network", ip: "10.10.30.30", virtualbox__intnet: "h3switch", nic_type: "virtio", :netmask => "255.255.255.0"
-    switchRouter.vm.network "private_network", ip: "10.10.30.40", virtualbox__intnet: "h4switch", nic_type: "virtio", :netmask => "255.255.255.0"
-    switchRouter.vm.provider "virtualbox" do |virtualbox|
-      virtualbox.customize [ "modifyvm", :id, "--nicpromisc2", "allow-vms" ]
-      virtualbox.customize [ "modifyvm", :id, "--nicpromisc3", "allow-vms" ]
-      virtualbox.customize [ "modifyvm", :id, "--nicpromisc4", "allow-vms" ]
-      virtualbox.customize [ "modifyvm", :id, "--nicpromisc5", "allow-vms" ]
-    end
-  end
 end
