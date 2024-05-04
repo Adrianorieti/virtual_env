@@ -1,0 +1,5 @@
+- name: Set nameserver in resolv.conf
+  ansible.builtin.replace:
+   path: /etc/resolv.conf
+   regexp: '^nameserver\s+.+'
+   replace: 'nameserver 10.10.10.2'

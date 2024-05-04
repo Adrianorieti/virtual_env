@@ -25,18 +25,14 @@
     - mailserver
     - firewall
     - common
+    - nameserver
     
-- hosts: client
+- hosts: client, client2
   become: true
   roles:
     - common
-    # - alpineClient
-
-- hosts: client2
-  become: true
-  roles:
-    - common
-    # - alpineClient
+    - alpineClient
+    - nameserver
     
 - hosts: switchRouter
   become: true

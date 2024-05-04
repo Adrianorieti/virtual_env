@@ -2,9 +2,7 @@
   become: true
   apt:
     name: alpine
-    state: latest
-    update_cache: yes
-    cache_valid_time: 3600
+
 
 - name: Copy Alpine configuration file
   ansible.builtin.template:
